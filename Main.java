@@ -1,30 +1,53 @@
 class Main {
   public static void main(String[] args) {
+    String[] vertices = {
+      "Business & Technology",
+      "Theatre",
+      "Liberal Arts",
+      "Student Services",
+      "Health Careers & Sciences",
+      "Health Technologies Center",
+      "Recreation Center",
+      "Technology Learning Center"
+    };
 
-    MyHashMap<String, Integer> creditHours = new MyHashMap<String, Integer>();
-    // Adding course credit hours
-    creditHours.put("IT-1025", 3);
-    creditHours.put("IT-1050", 3);
-    creditHours.put("IT-1150", 3);
-    creditHours.put("IT-2310", 3);
-    creditHours.put("IT-2320", 4);
-    creditHours.put("IT-2351", 4);
-    creditHours.put("IT-2650", 4);
-    creditHours.put("IT-2660", 4);
-    creditHours.put("IT-2030", 4);
-    // Check for specific values
-    System.out.println("Contains IT-1025: " + creditHours.containsKey("IT-1025"));
-    System.out.println("Contains IT-2110: " + creditHours.containsKey("IT-2110"));
-    // Print all values
-    System.out.println("\nAll values in the map:");
-    System.out.println(creditHours.toString());
-    // Remove specified entries
-    creditHours.remove("IT-2030");
-    creditHours.remove("IT-1150");
-    // Print all values after removal
-    System.out.println("\nValues after removal:");
-    System.out.println(creditHours.toString());
-    }
-    }
+    int[][] edges = {
+    {0, 1}, {0, 3}, {0, 4},
+    {1, 2},
+    {2, 3}, {2, 4},
+    {3, 5}, {3, 6},
+    {4, 5}, {4, 6},
+    {5, 6},
+    {6, 7}
+    };
 
+    Graph<String> graph = new UnweightedGraph<>(vertices, edges);
+    // Get a dfs starting at the Business and Technology Building. Change this is you called it something different in your vertices!
 
+    UnweightedGraph<String>.SearchTree dfs = graph.dfs(graph.getIndex("Business & Technology")); 
+
+    java.util.List<Integer> searchOrders = dfs.getSearchOrder();
+    System.out.println(dfs.getNumberOfVerticesFound() + " vertices are searched in this DFS order:");
+    for (int i = 0; i < searchOrders.size(); i++)
+      System.out.print(graph.getVertex(searchOrders.get(i)) + ", ");
+    System.out.println();
+
+    for (int i = 0; i < searchOrders.size(); i++)
+      if (dfs.getParent(i) != -1)
+        System.out.println("parent of " + graph.getVertex(i) +
+          " is " + graph.getVertex(dfs.getParent(i)));
+    System.out.println();
+    System.out.println();
+
+  dfs.printPath(graph.getIndex("Health Technologies Center"));
+    System.out.println();
+    System.out.println();
+dfs.printPath(graph.getIndex("Student Services"));
+    System.out.println();
+    System.out.println();
+dfs.printPath(graph.getIndex("Recreation Center"));
+    System.out.println();
+    System.out.println();
+dfs.printTree();
+  }
+}
